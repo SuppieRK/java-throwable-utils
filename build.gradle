@@ -86,7 +86,7 @@ bintray {
     publications = ['maven']
 
     pkg {
-        repo = "${project.name}"
+        repo = "${project.group}"
         name = "${project.name}"
         licenses = ['MIT']
         vcsUrl = "https://github.com/SuppieRK/${project.name}.git"
