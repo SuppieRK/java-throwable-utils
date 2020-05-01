@@ -6,6 +6,9 @@ name: Java CI with Gradle for master branch
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - '**.yml'
+      - '**.md'
 
 jobs:
   build:

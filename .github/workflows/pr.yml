@@ -4,9 +4,6 @@
 name: Java CI with Gradle for Pull Requests
 
 on:
-  push:
-    paths:
-      - '!README.md'
   pull_request:
     branches: [ master ]
 
