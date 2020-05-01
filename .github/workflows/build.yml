@@ -21,4 +21,4 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
       - name: Publish to Bintray with Gradle
-        run: ./gradlew bintrayUpload -Dbintray.user=<YOUR_USER_NAME> -Dbintray.key=<YOUR_API_KEY>
+        run: ./gradlew bintrayUpload -Dbintray.user=${{ secrets.BINTRAY_USER }} -Dbintray.key=${{ secrets.BINTRAY_KEY }}
