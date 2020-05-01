@@ -1,0 +1,99 @@
+plugins {
+    id 'java'
+
+    id 'idea'
+    id 'eclipse'
+
+    id 'maven'
+    id 'maven-publish'
+    id 'com.jfrog.bintray' version "$BINTRAY_VERSION"
+}
+
+description = 'Java 8 extensions allowing to use checked exceptions in functional programming API and adding Try monadic interface alongside with Optional'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter:$JUNIT_VERSION"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task sourceJar(type: Jar, dependsOn: classes) {
+    archiveClassifier.set('sources')
+    from sourceSets.main.allSource
+}
+
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier.set('javadoc')
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourceJar
+}
+
+def pomConfig = {
+    licenses {
+        license {
+            name 'MIT License'
+            url 'https://opensource.org/licenses/MIT'
+            distribution 'repo'
+        }
+    }
+    developers {
+        developer {
+            id 'SuppieRK'
+            name 'Roman Khlebnov'
+            email 'suppie.rk@gmail.com'
+        }
+    }
+    scm {
+        url "https://github.com/SuppieRK/${project.name}"
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "${project.group}"
+            artifactId = "${project.name}"
+            version = "${project.version}"
+            from project.components.java
+            artifact javadocJar
+            artifact sourceJar
+
+            pom.withXml {
+                def root = asNode()
+                root.appendNode('description', "${description}")
+                root.appendNode('name', "${project.name}")
+                root.appendNode('url', "https://github.com/SuppieRK/${project.name}")
+                root.children().last() + pomConfig
+            }
+        }
+    }
+}
+
+bintray {
+    user = System.getProperty('bintray.user')
+    key = System.getProperty('bintray.key')
+    publications = ['mavenPublication']
+
+    pkg {
+        repo = "${project.name}"
+        name = "${project.name}"
+        licenses = ['MIT']
+        vcsUrl = "https://github.com/SuppieRK/${project.name}.git"
+        version {
+            name = "${project.version}"
+            desc = "${project.version}"
+            released = new Date()
+        }
+    }
+}
