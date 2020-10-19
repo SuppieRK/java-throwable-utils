@@ -9,16 +9,34 @@ This dependency-less library serves for one simple purpose - allow developer to 
 
 - Maven
 ```xml
-<dependency>
-    <groupId>com.github.suppie</groupId>
-    <artifactId>java-throwable-utils</artifactId>
-    <version>1.0.0</version>
-</dependency>
+<project>
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <name>jcenter</name>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.github.suppie</groupId>
+            <artifactId>java-throwable-utils</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+</project>
 ```
 
 - Gradle
 ```groovy
-implementation 'com.github.suppie:java-throwable-utils:1.0.0'
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation 'com.github.suppie:java-throwable-utils:1.0.0'
+}
 ```
 
 ## Examples
