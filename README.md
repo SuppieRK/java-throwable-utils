@@ -4,6 +4,22 @@
 
 This dependency-less library serves for one simple purpose - allow developer to invoke methods throwing exceptions in Java 8 functional expressions / Stream API
 
+## How to add
+
+- Maven
+```xml
+<dependency>
+    <groupId>com.github.suppie</groupId>
+    <artifactId>java-throwable-utils</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+- Gradle
+```groovy
+implementation 'com.github.suppie:java-throwable-utils:1.0.0'
+```
+
 ## Examples
 
 If previously you had to use constructs like:
@@ -34,7 +50,7 @@ public class Test {
 with this library you can simplify this pipeline to:
 
 ```java
-import io.github.suppie.toolset.java.util.function.ThrowableConsumer;
+import com.github.suppie.java.util.function.ThrowableConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,7 +75,7 @@ All exceptions will be propagated as is using neat trick similar to Apache Commo
 This library has simple implementation of `Try` monad, which benefits greatly from presence of these functions and allows us to handle exceptions in functional style much like you deal with nullable values using `Optional`
 
 ```java
-import io.github.suppie.toolset.java.util.Try;
+import com.github.suppie.java.util.Try;
 
 import java.util.ArrayList;
 import java.util.List;

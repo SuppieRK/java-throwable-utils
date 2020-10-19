@@ -4,12 +4,19 @@ plugins {
     id 'idea'
     id 'eclipse'
 
+    id 'jacoco'
+
     id 'maven'
     id 'maven-publish'
     id 'com.jfrog.bintray' version "$BINTRAY_VERSION"
 }
 
 description = 'Java 8 extensions allowing to use checked exceptions in functional programming API and adding Try monadic interface alongside with Optional'
+
+// Source code properties
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+compileJava.options.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
