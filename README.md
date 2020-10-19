@@ -1,7 +1,7 @@
 # Java Throwable Utils
 
-[ ![Download](https://api.bintray.com/packages/suppierk/io.github.suppie.toolset/java-throwable-utils/images/download.svg) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils?ref=badge_shield)
-](https://bintray.com/suppierk/io.github.suppie.toolset/java-throwable-utils/_latestVersion)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils?ref=badge_shield)
+[![Download](https://api.bintray.com/packages/suppierk/com.github.suppie/java-throwable-utils/images/download.svg)](https://bintray.com/suppierk/com.github.suppie/java-throwable-utils/_latestVersion)
 
 This dependency-less library serves for one simple purpose - allow developer to invoke methods throwing exceptions in Java 8 functional expressions / Stream API
 
