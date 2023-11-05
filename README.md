@@ -8,39 +8,23 @@ This dependency-less library serves for one simple purpose - allow developer to 
 
 - Maven
 ```xml
-<project>
-    <repositories>
-        <repository>
-            <id>jcenter</id>
-            <name>jcenter</name>
-            <url>https://jcenter.bintray.com</url>
-        </repository>
-    </repositories>
-    
-    <dependencies>
-        <dependency>
-            <groupId>com.github.suppie</groupId>
-            <artifactId>java-throwable-utils</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-    </dependencies>
-</project>
+<dependency>
+    <groupId>io.github.suppierk</groupId>
+    <artifactId>java-throwable-utils</artifactId>
+    <version>1.0.1</version>
+</dependency>
 ```
 
 - Gradle
 ```groovy
-repositories {
-    jcenter()
-}
-
 dependencies {
-    implementation 'com.github.suppie:java-throwable-utils:1.0.0'
+    implementation 'io.github.suppierk:java-throwable-utils:1.0.1'
 }
 ```
 
 ## Examples
 
-If previously you had to use constructs like:
+If you had to use constructs like:
 
 ```java
 import java.util.ArrayList;
@@ -65,7 +49,7 @@ public class Test {
 }
 ``` 
 
-with this library you can simplify this pipeline to:
+with this library, you can simplify this pipeline to:
 
 ```java
 import function.io.github.suppierk.java.util.ThrowableConsumer;
@@ -86,7 +70,7 @@ public class Test {
 }
 ```
 
-All exceptions will be propagated as is using neat trick similar to Apache Commons `ExceptionUtils.rethrow` by leveraging Java' type erasure to make checked exceptions unchecked.
+All exceptions will be propagated using neat trick similar to Apache Commons `ExceptionUtils.rethrow` by leveraging Java type erasure to make checked exceptions unchecked.
 
 ## Try
 
@@ -115,7 +99,7 @@ public class Test {
 }
 ```
 
-Same as for `Optional`, `Try` in case of failure will preserve only first exception happened in call chain and skip further operations.
+Same as for `Optional`, `Try` in case of failure will preserve only first exception happened in a call chain and skip further operations.
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils?ref=badge_large)
