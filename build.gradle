@@ -21,8 +21,8 @@ version = "$VERSION_NAME"
 description = "$POM_DESCRIPTION"
 
 // Source code properties
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '11'
+targetCompatibility = '11'
 compileJava.options.encoding = 'UTF-8'
 
 // Enable Spotless code formatting rules
