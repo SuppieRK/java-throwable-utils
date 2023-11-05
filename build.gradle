@@ -21,9 +21,11 @@ version = "$VERSION_NAME"
 description = "$POM_DESCRIPTION"
 
 // Source code properties
-sourceCompatibility = '11'
-targetCompatibility = '11'
-compileJava.options.encoding = 'UTF-8'
+java {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    compileJava.options.encoding = 'UTF-8'
+}
 
 // Enable Spotless code formatting rules
 spotless {

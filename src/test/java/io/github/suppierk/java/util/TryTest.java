@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2020 Roman Khlebnov
+ * Copyright (c) 2023 Roman Khlebnov
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -185,18 +185,15 @@ class TryTest {
                     })
                 .get());
 
-    assertThrows(
-        IllegalStateException.class, () -> FAILURE_SAMPLE.map(ThrowableFunction.identity()).get());
+    Try<String> mappedToItself = FAILURE_SAMPLE.map(ThrowableFunction.identity());
+    assertThrows(IllegalStateException.class, mappedToItself::get);
 
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            FAILURE_SAMPLE
-                .map(
-                    s -> {
-                      throw new IllegalArgumentException();
-                    })
-                .get());
+    Try<Object> mappedToException =
+        FAILURE_SAMPLE.map(
+            s -> {
+              throw new IllegalArgumentException();
+            });
+    assertThrows(IllegalStateException.class, mappedToException::get);
   }
 
   @Test
@@ -215,17 +212,15 @@ class TryTest {
                     })
                 .get());
 
-    assertThrows(IllegalStateException.class, () -> FAILURE_SAMPLE.flatMap(Try::success).get());
+    Try<String> mappedToSuccess = FAILURE_SAMPLE.flatMap(Try::success);
+    assertThrows(IllegalStateException.class, mappedToSuccess::get);
 
-    assertThrows(
-        IllegalStateException.class,
-        () ->
-            FAILURE_SAMPLE
-                .flatMap(
-                    s -> {
-                      throw new IllegalArgumentException();
-                    })
-                .get());
+    Try<Object> mappedToException =
+        FAILURE_SAMPLE.flatMap(
+            s -> {
+              throw new IllegalArgumentException();
+            });
+    assertThrows(IllegalStateException.class, mappedToException::get);
   }
 
   @Test
