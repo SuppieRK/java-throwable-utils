@@ -1,3 +1,3 @@
 # 1.0.0
 
-Initial release with set of functions and Try
+Initial release with a set of Java functional interfaces and Try

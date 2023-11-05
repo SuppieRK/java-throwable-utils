@@ -1,7 +1,6 @@
 # Java Throwable Utils
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils?ref=badge_shield)
-[![Download](https://api.bintray.com/packages/suppierk/com.github.suppie/java-throwable-utils/images/download.svg)](https://bintray.com/suppierk/com.github.suppie/java-throwable-utils/_latestVersion)
 
 This dependency-less library serves for one simple purpose - allow developer to invoke methods throwing exceptions in Java 8 functional expressions / Stream API
 
@@ -69,7 +68,7 @@ public class Test {
 with this library you can simplify this pipeline to:
 
 ```java
-import com.github.suppie.java.util.function.ThrowableConsumer;
+import function.io.github.suppierk.java.util.ThrowableConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,7 +93,7 @@ All exceptions will be propagated as is using neat trick similar to Apache Commo
 This library has simple implementation of `Try` monad, which benefits greatly from presence of these functions and allows us to handle exceptions in functional style much like you deal with nullable values using `Optional`
 
 ```java
-import com.github.suppie.java.util.Try;
+import io.github.suppierk.java.util.Try;
 
 import java.util.ArrayList;
 import java.util.List;

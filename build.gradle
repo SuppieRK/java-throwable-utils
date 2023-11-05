@@ -1,29 +1,45 @@
+import java.nio.charset.StandardCharsets
+
 plugins {
     id 'java'
+    id 'java-library'
 
     id 'idea'
     id 'eclipse'
 
     id 'jacoco'
 
-    id 'maven'
-    id 'maven-publish'
-    id 'com.jfrog.bintray' version "$BINTRAY_VERSION"
+    // Publishing
+    id 'com.vanniktech.maven.publish' version '0.25.3'
+
+    id 'com.diffplug.spotless' version '6.22.0'
 }
 
-description = 'Java 8 extensions allowing to use checked exceptions in functional programming API and adding Try monadic interface alongside with Optional'
+// Project properties
+group = "$GROUP"
+version = "$VERSION_NAME"
+description = "$POM_DESCRIPTION"
 
 // Source code properties
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 compileJava.options.encoding = 'UTF-8'
 
+// Enable Spotless code formatting rules
+spotless {
+    java {
+        googleJavaFormat()
+    }
+
+    lineEndings = 'UNIX'
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter:$JUNIT_VERSION"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 
 test {
@@ -35,7 +51,6 @@ task sourceJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
-javadoc.failOnError = false
 task javadocJar(type: Jar, dependsOn: javadoc) {
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
@@ -46,61 +61,12 @@ artifacts {
     archives sourceJar
 }
 
-def pomConfig = {
-    licenses {
-        license {
-            name 'MIT License'
-            url 'https://opensource.org/licenses/MIT'
-            distribution 'repo'
-        }
-    }
-    developers {
-        developer {
-            id 'SuppieRK'
-            name 'Roman Khlebnov'
-            email 'suppie.rk@gmail.com'
-        }
-    }
-    scm {
-        url "https://github.com/SuppieRK/${project.name}"
-    }
+// Configure several tasks additionally for Gradle
+tasks.withType(Copy).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = "${project.group}"
-            artifactId = "${project.name}"
-            version = "${project.version}"
-            from project.components.java
-            artifact javadocJar
-            artifact sourceJar
-
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('description', "${description}")
-                root.appendNode('name', "${project.name}")
-                root.appendNode('url', "https://github.com/SuppieRK/${project.name}")
-                root.children().last() + pomConfig
-            }
-        }
-    }
-}
-
-bintray {
-    user = System.getProperty('bintray.user')
-    key = System.getProperty('bintray.key')
-    publications = ['maven']
-
-    pkg {
-        repo = "${project.group}"
-        name = "${project.name}"
-        licenses = ['MIT']
-        vcsUrl = "https://github.com/SuppieRK/${project.name}.git"
-        version {
-            name = "${project.version}"
-            desc = "${project.version}"
-            released = new Date()
-        }
-    }
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = StandardCharsets.UTF_8.name()
+    dependsOn(spotlessJavaCheck)
 }
