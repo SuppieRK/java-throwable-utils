@@ -52,7 +52,7 @@ public class Test {
 with this library, you can simplify this pipeline to:
 
 ```java
-import function.io.github.suppierk.java.util.ThrowableConsumer;
+import io.github.suppierk.java.util.function.ThrowableConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
