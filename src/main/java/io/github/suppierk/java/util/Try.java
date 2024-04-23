@@ -34,7 +34,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * A container object which contain either a value or exception.
+ * A container object that contains either a value or exception.
  *
  * <p>If a value is present, {@link #isSuccess()} will return {@code true} and {@link #get()} will
  * return the value. If exception occurred, {@link #isFailure()} will return {@code true} and {@link
@@ -160,7 +160,7 @@ public interface Try<T> {
 
   /**
    * If a value is present, apply the provided mapping function to it, and if the result is
-   * non-null, return a {@link Try} describing the result. Otherwise return a failed {@link Try}.
+   * non-null, return a {@link Try} describing the result. Otherwise, return a failed {@link Try}.
    *
    * @param <U> The type of the result of the mapping function
    * @param mapper a mapping function to apply to the value, if present
@@ -241,11 +241,10 @@ public interface Try<T> {
     /**
      * Constructs an instance with the value present.
      *
-     * @param value the non-null value to be present
-     * @throws NullPointerException if value is null
+     * @param value the value to be present
      */
     protected Success(T value) {
-      this.value = Objects.requireNonNull(value, "Try.success(Object) argument must not be null");
+      this.value = value;
     }
 
     /** {@inheritDoc} */

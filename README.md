@@ -12,14 +12,14 @@ reduce boilerplate try-catch statements during work with Java Stream API.
 <dependency>
     <groupId>io.github.suppierk</groupId>
     <artifactId>java-throwable-utils</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
 - Gradle
 ```groovy
 dependencies {
-    implementation 'io.github.suppierk:java-throwable-utils:1.0.2'
+    implementation 'io.github.suppierk:java-throwable-utils:1.0.3'
 }
 ```
 

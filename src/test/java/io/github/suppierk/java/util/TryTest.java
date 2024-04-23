@@ -24,13 +24,7 @@
 
 package io.github.suppierk.java.util;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import io.github.suppierk.java.util.function.ThrowableFunction;
 import io.github.suppierk.java.util.function.ThrowableSupplier;
@@ -63,16 +57,13 @@ class TryTest {
         "Exception must be of type NullPointerException");
 
     Try<String> nullValueSupplier = Try.of(() -> null);
-    assertFalse(
+    assertTrue(
         nullValueSupplier.isSuccess(),
         "Try for supplied null value must return 'false' for #isSuccess()");
-    assertTrue(
+    assertFalse(
         nullValueSupplier.isFailure(),
         "Try for supplied null value must return 'true' for #isFailure()");
-    assertThrows(
-        NullPointerException.class,
-        nullValueSupplier::get,
-        "Exception must be of type NullPointerException");
+    assertNull(nullValueSupplier.get(), "Successful value should be null");
 
     Try<String> throwableSupplier =
         Try.of(
@@ -109,7 +100,7 @@ class TryTest {
 
   @Test
   void assertCreationUsingDirectApproach() {
-    assertThrows(NullPointerException.class, () -> Try.success(null));
+    assertDoesNotThrow(() -> Try.success(null));
 
     Try<String> correctSuccessValue = Try.success("");
     assertTrue(correctSuccessValue.isSuccess());
