@@ -1,13 +1,13 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle for Pull Requests
+name: Java CI with Gradle for publication on tag creation
 
 on:
   workflow_dispatch: {}
-  pull_request:
-    branches-ignore:
-      - master
+  push:
+    tags:
+      - '**'
 
 jobs:
   build:
@@ -31,8 +31,13 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
       - name: Build with Gradle
         run: ./gradlew build
+
+      - name: Publish to Maven Central
+        run: ./gradlew publishAllPublicationsToMavenCentral --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALUSERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALPASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGINMEMORYKEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGINMEMORYKEYPASSWORD }}
