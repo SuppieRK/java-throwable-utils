@@ -24,12 +24,16 @@
 
 package io.github.suppierk.java.util.function;
 
+import io.github.suppierk.java.util.ExceptionSuppressor;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
+
 /**
  * Represents an operation on a single operand that produces a result of the same type as its
  * operand. This is a specialization of {@code Function} for the case where the operand and result
  * are of the same type.
  *
- * <p>Permits checked exceptions unlike {@link java.util.function.UnaryOperator}
+ * <p>Permits checked exceptions unlike {@link UnaryOperator}
  *
  * <p>This is a <a href="package-summary.html">functional interface</a> whose functional method is
  * {@link #apply(Object)}.
@@ -38,7 +42,34 @@ package io.github.suppierk.java.util.function;
  * @see ThrowableFunction
  */
 @FunctionalInterface
-public interface ThrowableUnaryOperator<T> extends ThrowableFunction<T, T> {
+@SuppressWarnings("squid:S112")
+public interface ThrowableUnaryOperator<T> extends UnaryOperator<T> {
+  /**
+   * Applies this function to the given argument.
+   *
+   * @param t the function argument
+   * @return the function result
+   * @throws Throwable occurred during processing
+   */
+  T applyUnsafe(T t) throws Throwable;
+
+  /**
+   * Applies this function to the given argument.
+   *
+   * <p>Has default implementation in order to make {@link #compose(Function)} and {@link
+   * #andThen(Function)} work.
+   *
+   * @param t the function argument
+   * @return the function result
+   */
+  @Override
+  default T apply(T t) {
+    try {
+      return applyUnsafe(t);
+    } catch (Throwable throwable) {
+      return ExceptionSuppressor.asUnchecked(throwable);
+    }
+  }
 
   /**
    * Returns a unary operator that always returns its input argument.

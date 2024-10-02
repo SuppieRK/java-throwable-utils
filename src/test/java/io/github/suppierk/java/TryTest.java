@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package io.github.suppierk.java.util;
+package io.github.suppierk.java;
 
 import static org.junit.jupiter.api.Assertions.*;
 

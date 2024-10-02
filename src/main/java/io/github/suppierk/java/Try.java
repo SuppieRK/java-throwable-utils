@@ -22,8 +22,9 @@
  * SOFTWARE.
  */
 
-package io.github.suppierk.java.util;
+package io.github.suppierk.java;
 
+import io.github.suppierk.java.util.ExceptionSuppressor;
 import io.github.suppierk.java.util.function.ThrowableConsumer;
 import io.github.suppierk.java.util.function.ThrowableFunction;
 import io.github.suppierk.java.util.function.ThrowablePredicate;

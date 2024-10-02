@@ -24,9 +24,11 @@
 
 package io.github.suppierk.java.util.function;
 
+import io.github.suppierk.java.util.ExceptionSuppressor;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.function.BiFunction;
+import java.util.function.BinaryOperator;
 import java.util.function.UnaryOperator;
 
 /**
@@ -34,7 +36,7 @@ import java.util.function.UnaryOperator;
  * as the operands. This is a specialization of {@link BiFunction} for the case where the operands
  * and the result are all of the same type.
  *
- * <p>Permits checked exceptions unlike {@link java.util.function.BinaryOperator}
+ * <p>Permits checked exceptions unlike {@link BinaryOperator}
  *
  * <p>This is a <a href="package-summary.html">functional interface</a> whose functional method is
  * {@link #apply(Object, Object)}.
@@ -45,7 +47,31 @@ import java.util.function.UnaryOperator;
  */
 @FunctionalInterface
 @SuppressWarnings("squid:S112")
-public interface ThrowableBinaryOperator<T> extends ThrowableBiFunction<T, T, T> {
+public interface ThrowableBinaryOperator<T> extends BinaryOperator<T> {
+  /**
+   * Applies this function to the given argument.
+   *
+   * @param t the function argument
+   * @return the function result
+   * @throws Throwable occurred during processing
+   */
+  T applyUnsafe(T t, T t2) throws Throwable;
+
+  /**
+   * Applies this function to the given arguments.
+   *
+   * @param t the function argument
+   * @return the function result
+   */
+  @Override
+  default T apply(T t, T t2) {
+    try {
+      return applyUnsafe(t, t2);
+    } catch (Throwable throwable) {
+      return ExceptionSuppressor.asUnchecked(throwable);
+    }
+  }
+
   /**
    * Returns a {@link ThrowableBinaryOperator} which returns the lesser of two elements according to
    * the specified {@code Comparator}.
