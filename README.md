@@ -1,6 +1,6 @@
 # Java Throwable Utils
 
-This dependency-less library serves for one simple purpose: 
+This dependency-less library serves for one simple purpose:
 reduce boilerplate try-catch statements during work with Java Stream API.
 
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils?ref=badge_shield)
@@ -10,18 +10,20 @@ reduce boilerplate try-catch statements during work with Java Stream API.
 ## How to add
 
 - Maven
+
 ```xml
 <dependency>
     <groupId>io.github.suppierk</groupId>
     <artifactId>java-throwable-utils</artifactId>
-    <version>1.0.3</version>
+    <version>2.0.0</version>
 </dependency>
 ```
 
 - Gradle
+
 ```groovy
 dependencies {
-    implementation 'io.github.suppierk:java-throwable-utils:1.0.3'
+    implementation 'io.github.suppierk:java-throwable-utils:2.0.0'
 }
 ```
 
@@ -133,16 +135,46 @@ public class Demo {
 }
 ```
 
-All exceptions will be propagated using neat trick similar to Apache Commons `ExceptionUtils.rethrow` by leveraging Java type erasure to make checked exceptions unchecked.
+or with the help of `UnsafeFunctions` utility class you can shorten it even more without changing your logic too much:
+
+> This is the recommended, the least intrusive and the least verbose way
+
+```java
+import static io.github.suppierk.java.UnsafeFunctions.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Demo {
+    public static String throwingMethod(String source) throws Exception {
+        throw new Exception(source);
+    }
+
+    public static void main(String[] args) {
+        List<String> test = new ArrayList<>();
+        test.add("sample");
+
+        try {
+            test.stream()
+                    .map(unsafeFunction(Demo::throwingMethod))
+                    .forEach(unsafeConsumer(Demo::throwingMethod));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+All exceptions will be propagated using neat trick similar to Apache Commons `ExceptionUtils.rethrow` by leveraging Java
+type erasure to make checked exceptions unchecked.
 
 ## Try
 
-This library has simple implementation of `Try`, 
-which benefits greatly from presence of these functions 
+This library has simple implementation of `Try`, which benefits greatly from presence of these functions
 and allows us to handle exceptions in functional style much like you deal with nullable values using `Optional`.
 
 ```java
-import io.github.suppierk.java.util.Try;
+import io.github.suppierk.java.Try;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,7 +196,9 @@ public class Test {
 }
 ```
 
-Same as for `Optional`, `Try` in a case of failure will preserve only first exception happened in a call chain and skip further operations.
+Same as for `Optional`, `Try` in a case of failure will preserve only first exception happened in a call chain and skip
+further operations.
 
 ## License
+
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils?ref=badge_large)

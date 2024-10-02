@@ -32,7 +32,7 @@ import java.util.function.Function;
  * Represents a function that accepts two arguments and produces a result. This is the two-arity
  * specialization of {@link Function}.
  *
- * <p>Permits checked exceptions unlike {@link ThrowableBiFunction}
+ * <p>Permits checked exceptions unlike {@link BiFunction}
  *
  * <p>This is a <a href="package-summary.html">functional interface</a> whose functional method is
  * {@link #apply(Object, Object)}.

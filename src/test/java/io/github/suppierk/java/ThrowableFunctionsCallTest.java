@@ -22,12 +22,14 @@
  * SOFTWARE.
  */
 
-package io.github.suppierk.java.util;
+package io.github.suppierk.java;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.github.suppierk.java.lang.ThrowableRunnable;
+import io.github.suppierk.java.util.ThrowableComparator;
 import io.github.suppierk.java.util.function.ThrowableBiConsumer;
 import io.github.suppierk.java.util.function.ThrowableBiFunction;
 import io.github.suppierk.java.util.function.ThrowableBiPredicate;
@@ -119,6 +121,13 @@ class ThrowableFunctionsCallTest {
     return Stream.of(
         arg(
             () ->
+                ((ThrowableRunnable)
+                        () -> {
+                          throw EXCEPTION;
+                        })
+                    .run()),
+        arg(
+            () ->
                 ((ThrowableBiConsumer<String, String>)
                         (s, s2) -> {
                           throw EXCEPTION;
@@ -127,6 +136,13 @@ class ThrowableFunctionsCallTest {
         arg(
             () ->
                 ((ThrowableBiFunction<String, String, String>)
+                        (s, s2) -> {
+                          throw EXCEPTION;
+                        })
+                    .apply(null, null)),
+        arg(
+            () ->
+                ((ThrowableBinaryOperator<String>)
                         (s, s2) -> {
                           throw EXCEPTION;
                         })
@@ -421,6 +437,13 @@ class ThrowableFunctionsCallTest {
                         (o1, o2) -> {
                           throw EXCEPTION;
                         })
-                    .compare(null, null)));
+                    .compare(null, null)),
+        arg(
+            () ->
+                ((ThrowableUnaryOperator<String>)
+                        s -> {
+                          throw EXCEPTION;
+                        })
+                    .apply(null)));
   }
 }
