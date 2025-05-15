@@ -33,8 +33,6 @@ spotless {
     java {
         googleJavaFormat()
     }
-
-    lineEndings = 'UNIX'
 }
 
 repositories {
