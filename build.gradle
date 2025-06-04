@@ -43,12 +43,14 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.13.0'
 }
 
-task sourceJar(type: Jar, dependsOn: classes) {
+tasks.register('sourceJar', Jar) {
+    dependsOn classes
     archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
+tasks.register('javadocJar', Jar) {
+    dependsOn javadoc
     archiveClassifier.set('javadoc')
     from javadoc.destinationDir
 }
