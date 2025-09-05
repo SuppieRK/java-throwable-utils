@@ -15,7 +15,7 @@ reduce boilerplate try-catch statements during work with Java Stream API.
 <dependency>
     <groupId>io.github.suppierk</groupId>
     <artifactId>java-throwable-utils</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 </dependency>
 ```
 
@@ -23,7 +23,7 @@ reduce boilerplate try-catch statements during work with Java Stream API.
 
 ```groovy
 dependencies {
-    implementation 'io.github.suppierk:java-throwable-utils:2.0.0'
+    implementation 'io.github.suppierk:java-throwable-utils:2.0.1'
 }
 ```
 
