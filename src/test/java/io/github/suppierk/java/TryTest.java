@@ -127,6 +127,16 @@ class TryTest {
   }
 
   @Test
+  void assertConditionalExecutionDependingOnValuePresenceIfElseUsecase() {
+    Try<String> success = Try.success("");
+    success.ifSuccessOrElse(s -> assertEquals("", s), throwable -> fail());
+
+    Try<String> failure = Try.failure(new IllegalStateException());
+    failure.ifSuccessOrElse(
+        s -> fail(), throwable -> assertEquals(IllegalStateException.class, throwable.getClass()));
+  }
+
+  @Test
   void assertFiltering() {
     Try<String> successSuccessFilter =
         Assertions.assertDoesNotThrow(() -> SUCCESS_SAMPLE.filter(s -> s.equals("")));

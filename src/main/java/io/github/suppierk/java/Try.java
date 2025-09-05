@@ -150,6 +150,16 @@ public interface Try<T> {
   void ifFailure(ThrowableConsumer<Throwable> consumer);
 
   /**
+   * If a value is present, invoke the specified consumer with the value, otherwise invoke the
+   * specified consumer with the exception.
+   *
+   * @param valueConsumer block to be executed if a value is present
+   * @param throwableConsumer block to be executed if an exception is present
+   */
+  void ifSuccessOrElse(
+      ThrowableConsumer<? super T> valueConsumer, ThrowableConsumer<Throwable> throwableConsumer);
+
+  /**
    * If a value is present, and the value matches the given predicate, return a {@link Try}
    * describing the value, otherwise return a failed {@link Try}.
    *
@@ -280,6 +290,14 @@ public interface Try<T> {
 
     /** {@inheritDoc} */
     @Override
+    public void ifSuccessOrElse(
+        ThrowableConsumer<? super T> valueConsumer,
+        ThrowableConsumer<Throwable> throwableConsumer) {
+      Objects.requireNonNull(valueConsumer).accept(value);
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public Try<T> filter(ThrowablePredicate<? super T> predicate) {
       try {
         if (Objects.requireNonNull(predicate).test(get())) {
@@ -370,6 +388,14 @@ public interface Try<T> {
     @Override
     public void ifFailure(ThrowableConsumer<Throwable> consumer) {
       Objects.requireNonNull(consumer).accept(exception);
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void ifSuccessOrElse(
+        ThrowableConsumer<? super T> valueConsumer,
+        ThrowableConsumer<Throwable> throwableConsumer) {
+      Objects.requireNonNull(throwableConsumer).accept(exception);
     }
 
     /** {@inheritDoc} */
