@@ -118,12 +118,12 @@ class TryTest {
   @Test
   void assertConditionalExecutionDependingOnValuePresence() {
     Try<String> success = Try.success("");
-    success.ifSuccess(s -> assertEquals("", s)).ifFailure(throwable -> fail());
+    success.ifSuccess(s -> assertEquals("", s));
+    success.ifFailure(throwable -> fail());
 
     Try<String> failure = Try.failure(new IllegalStateException());
-    failure
-        .ifSuccess(s -> fail())
-        .ifFailure(throwable -> assertEquals(IllegalStateException.class, throwable.getClass()));
+    failure.ifSuccess(s -> fail());
+    failure.ifFailure(throwable -> assertEquals(IllegalStateException.class, throwable.getClass()));
   }
 
   @Test
