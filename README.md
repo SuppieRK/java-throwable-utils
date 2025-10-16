@@ -1,11 +1,15 @@
 # Java Throwable Utils
 
-This dependency-less library serves for one simple purpose:
-reduce boilerplate try-catch statements during work with Java Stream API.
-
+[![Build status](https://github.com/SuppieRK/java-throwable-utils/actions/workflows/build.yml/badge.svg)](https://github.com/SuppieRK/java-throwable-utils/actions/workflows/build.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.suppierk/java-throwable-utils.svg)](https://search.maven.org/artifact/io.github.suppierk/java-throwable-utils)
+[![Javadoc](https://javadoc.io/badge2/io.github.suppierk/java-throwable-utils/javadoc.svg)](https://javadoc.io/doc/io.github.suppierk/java-throwable-utils)
+[![SonarCloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=SuppieRK_java-throwable-utils&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SuppieRK_java-throwable-utils)
+[![SonarCloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=SuppieRK_java-throwable-utils&metric=coverage)](https://sonarcloud.io/summary/new_code?id=SuppieRK_java-throwable-utils)
+[![SonarCloud Maintainability](https://sonarcloud.io/api/project_badges/measure?project=SuppieRK_java-throwable-utils&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=SuppieRK_java-throwable-utils)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FSuppieRK%2Fjava-throwable-utils?ref=badge_shield)
 
-[![SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-orange.svg)](https://sonarcloud.io/summary/overall?id=SuppieRK_java-throwable-utils)
+This dependency-less library serves for one simple purpose: reduce boilerplate try-catch statements when using the Java
+Stream API and functional interfaces.
 
 ## How to add
 
@@ -15,7 +19,7 @@ reduce boilerplate try-catch statements during work with Java Stream API.
 <dependency>
     <groupId>io.github.suppierk</groupId>
     <artifactId>java-throwable-utils</artifactId>
-    <version>2.0.1</version>
+    <version>2.0.2</version>
 </dependency>
 ```
 
@@ -23,13 +27,21 @@ reduce boilerplate try-catch statements during work with Java Stream API.
 
 ```groovy
 dependencies {
-    implementation 'io.github.suppierk:java-throwable-utils:2.0.1'
+    implementation("io.github.suppierk:java-throwable-utils:2.0.2")
 }
 ```
 
+## Compatibility
+
+| Topic                    | Details                                                                                                                                             |
+|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| Source and target levels | Compiled with `sourceCompatibility = 1.8` / `targetCompatibility = 1.8`. Binaries remain compatible with Java 8, 11, 17, and newer runtimes.        |
+| CI coverage              | GitHub Actions (`build.yml`) runs `./gradlew build sonar` on Temurin 17. Local spot-checks are encouraged on Java 8 or 11 when developing new APIs. |
+| Runtime requirements     | No third-party dependencies; artifacts are verified to run on Java 8+.                                                                              |
+
 ## Examples
 
-If you had to use constructs like:
+If you previously had to write boilerplate like this:
 
 ```java
 import java.util.ArrayList;
@@ -50,9 +62,6 @@ public class Demo {
                         try {
                             return throwingMethod(s);
                         } catch (Exception e) {
-                            // Here we would have to:
-                            // a) Return some value to filter out later and log exception
-                            // b) Wrap and rethrow an exception to catch it later again
                             throw new RuntimeException(e);
                         }
                     })
@@ -60,9 +69,6 @@ public class Demo {
                         try {
                             throwingMethod(s);
                         } catch (Exception e) {
-                            // Here we would have to:
-                            // a) Suppress and log exception
-                            // b) Wrap and rethrow an exception to catch it later again
                             throw new RuntimeException(e);
                         }
                     });
@@ -71,9 +77,9 @@ public class Demo {
         }
     }
 }
-``` 
+```
 
-with this library, you can simplify this pipeline to:
+with this library, you can simplify the pipeline to:
 
 ```java
 import io.github.suppierk.java.util.function.*;
@@ -101,7 +107,7 @@ public class Demo {
 }
 ```
 
-and you can take it further and define functions explicitly, removing the need to specify function types:
+You can take it further and define functions explicitly, removing the need to specify function types at the call site:
 
 ```java
 import io.github.suppierk.java.util.function.*;
@@ -135,9 +141,8 @@ public class Demo {
 }
 ```
 
-or with the help of `UnsafeFunctions` utility class you can shorten it even more without changing your logic too much:
-
-> This is the recommended, the least intrusive and the least verbose way
+Or, with the help of `UnsafeFunctions`, shorten the code without changing your logic too much. This is the recommended,
+least intrusive, and least verbose way:
 
 ```java
 import static io.github.suppierk.java.UnsafeFunctions.*;
@@ -165,13 +170,10 @@ public class Demo {
 }
 ```
 
-All exceptions will be propagated using neat trick similar to Apache Commons `ExceptionUtils.rethrow` by leveraging Java
-type erasure to make checked exceptions unchecked.
-
 ## Try
 
-This library has simple implementation of `Try`, which benefits greatly from presence of these functions
-and allows us to handle exceptions in functional style much like you deal with nullable values using `Optional`.
+This library ships a simple implementation of `Try`, which benefits greatly from the throwable functional interfaces and
+enables functional-style exception handling similar to how `Optional` deals with nullable values.
 
 ```java
 import io.github.suppierk.java.Try;
@@ -196,8 +198,51 @@ public class Test {
 }
 ```
 
-Same as for `Optional`, `Try` in a case of failure will preserve only first exception happened in a call chain and skip
-further operations.
+Like `Optional`, `Try` in a case of failure preserves only the first exception in a call chain and skips further
+operations.
+
+### Composing `Try` with recovery
+
+```java
+import io.github.suppierk.java.Try;
+import io.github.suppierk.java.util.function.ThrowableFunction;
+
+class TryDemo {
+    private static String toUpper(String value) throws Exception {
+        if (value == null) {
+            throw new Exception("missing value");
+        }
+        return value.toUpperCase();
+    }
+
+    static String recoverablePipeline(String input) {
+        return Try.of(() -> input)
+                .filter(s -> !s.isEmpty())
+                .map((ThrowableFunction<String, String>) TryDemo::toUpper)
+                .orElseTry(() -> "fallback")
+                .orElse("UNKNOWN");
+    }
+}
+```
+
+The first failing stage short-circuits the rest of the pipeline; `orElseTry` lets you provide an alternate computation
+and `orElse` finally retrieves the value with a default.
+
+### How exceptions are propagated
+
+Every throwable functional interface delegates to `ExceptionSuppressor.asUnchecked(Throwable)`, which relies on Java's
+type erasure trick to rethrow checked exceptions without wrapping them. This keeps the original exception type and stack
+trace intact.
+
+`Try` captures only the first failure in a chain. Once a `Try` instance enters the failed state:
+
+- Subsequent `map`, `flatMap`, or `filter` calls are skipped.
+- Additional exceptions are **not** attached as suppressed exceptions.
+- `Try.get()` rethrows the stored exception as unchecked, preserving the original cause for diagnostics.
+
+## Changelog
+
+Changes are tracked in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 

@@ -97,7 +97,6 @@ public interface Try<T> {
    * @param <T> the class of the value
    * @param value the value to be present
    * @return a {@link Try.Success} with the value
-   * @throws NullPointerException if value is null
    */
   static <T> Try<T> success(T value) {
     return new Success<>(value);
@@ -246,7 +245,7 @@ public interface Try<T> {
    * @param <T> the class of the value
    */
   class Success<T> implements Try<T> {
-    /** Non-null value. */
+    /** Value (maybe null). */
     private final T value;
 
     /**
@@ -335,7 +334,8 @@ public interface Try<T> {
     /** {@inheritDoc} */
     @Override
     public Try<T> orElseTry(ThrowableSupplier<T> supplier) {
-      Objects.requireNonNull(supplier, "Try.orElse argument must not be null");
+      Objects.requireNonNull(
+          supplier, "Try.orElseTry(ThrowableSupplier) argument must not be null");
       return this;
     }
   }
@@ -427,7 +427,9 @@ public interface Try<T> {
     /** {@inheritDoc} */
     @Override
     public Try<T> orElseTry(ThrowableSupplier<T> supplier) {
-      return Try.of(Objects.requireNonNull(supplier, "Try.orElse argument must not be null"));
+      return Try.of(
+          Objects.requireNonNull(
+              supplier, "Try.orElseTry(ThrowableSupplier) argument must not be null"));
     }
   }
 }
